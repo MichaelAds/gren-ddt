@@ -3,6 +3,7 @@ import { BoxInd } from "../components/Dashboard/BoxInd";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import dynamic from "next/dynamic"
+import { api } from "../services/api";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
     ssr: false,
@@ -40,14 +41,18 @@ const series = [
 ];
 
 export default function Dashboard() {
+    // api.get('/user')
+    // .then(response => console.log(response.data))
+    // api.get('/43881219838')
+    // .then(response => console.log(response))
     return(
         <Flex
             direction="column"
             h="100vh"
         >
-            <Header />
+            <Header name="Dashboard"/>
             <Flex w="100%" my="6" maxWidth={1480} mx="auto" >
-                <Sidebar />
+                <Sidebar dashColor="#35CB8C" cadColor="#5a5a5a" orcaColor="#5a5a5a"/>
 
                 <Flex
                     flex="1"

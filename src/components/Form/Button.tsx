@@ -4,15 +4,18 @@ import { Button as ChakraButton } from "@chakra-ui/react";
 interface ButtonProps {
     nameButton: string
     loading?: boolean;
+    width?: string;
+    type?: any;
 }
 
-export function Button({ nameButton, loading }: ButtonProps) {
+export function Button({ nameButton, loading, width = "60%", type = "button" }: ButtonProps) {
     return(
         <ChakraButton
+            as={type}
             type="submit"
             mt="6"
             mx="auto"
-            w="60%"
+            w={width}
             borderRadius="25"
             bg="#35CB8C"
             size="lg"

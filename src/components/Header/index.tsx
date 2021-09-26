@@ -2,12 +2,15 @@ import { Flex, Box, Heading, Icon, Img, Link, Avatar, Menu, MenuButton, MenuList
 import { BsFillBellFill } from "react-icons/bs"
 import { RiArrowDownSLine } from "react-icons/ri"
 
-export function Header() {
+interface HeaderProps {
+    name: string,
+}
+export function Header({ name }: HeaderProps) {
     return(
         <Flex m={8} align="center" maxWidth={1480} w="100%" mx="auto" justify="space-between">
-            <Flex w="10%" align="center">
+            <Flex w="20%" align="center">
                 <Img size="lg" src="/images/logoHeader.svg" alt="logo green-ddt" ml="3" mr={10}/>
-                <Heading color="gray.500" size="lg" fontWeight="700">Dasboard</Heading>
+                <Heading color="gray.500" size="lg" fontWeight="700">{name}</Heading>
             </Flex>
 
             <Flex w="15%" align="center" justify="space-between">

@@ -12,18 +12,27 @@ import { BackgroundLogo } from "../../components/Access/BackgroundLogo"
 import { InputLogin } from "../../components/Access/InputDecorationLogin";
 
 import { useRouter } from "next/dist/client/router";
+import { api } from "../../services/api";
+import { useQuery } from "react-query";
 
 type SignInFormData ={
     email: string;
-    password: string;
 }
 
 const signInFormSchema = yup.object().shape({
-    email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
-    password: yup.string().required('Senha obrigatória'),
+    email: yup.string().required('email obrigatório').email('inserir email valido'),
 })
 
-export default function Login() {
+export default function CreateGood() {
+    const {data, isLoading, isFetching, error} = useQuery('users', async () => {
+        const { data } = await api.get('/users')
+
+        return data;
+    }, {
+        staleTime: 1000 * 5, // demorar isso para chamar uma nova requisição, controlar stado de dados
+    })
+
+
     const { register, handleSubmit, formState} = useForm({
         resolver: yupResolver(signInFormSchema)
       });
@@ -32,8 +41,7 @@ export default function Login() {
       const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
         await new Promise(resolve => setTimeout(resolve, 2000));
     
-        console.log(values);
-        router.push('/dashboard');
+        await router.push('create-login-finish');
 
       }
     
@@ -41,27 +49,28 @@ export default function Login() {
 
     return(
         <Flex>
-                <Flex as="div" h="100vh" w="50%" bg="#EEEEEE" flexDirection="column" alignItems="center" justifyContent="center">
+                <Flex as="div" h="100vh" w="50%" bg="#EEEEEE" alignItems="center" justifyContent="center">
                     <Flex
                         as ="form"
                         width="100%"
-                        maxWidth={360}
+                        maxWidth={335}
                         p="10"
                         bg="#ffffff"
                         borderRadius={8}
                         flexDir="column"
                         onSubmit={handleSubmit(handleSignIn)}>
+                        
+                        <Stack spacing="4" >
+                            <Heading textAlign="center" color="#5a5a5a" fontSize="24px" mx="auto">Boa!</Heading>
+                                    
+                            <Text textAlign="center" fontSize="14" color="#5a5a5a">Por fim, enviaremos um link para a validação do email e para que crie uma senha de acesso</Text>
 
-                        <Stack spacing="4">
-                            <Heading color="#5a5a5a" fontSize="25px" mx="auto">Log in</Heading>
-                            <InputLogin error={errors.email} name="email" type="email" icon={RiUserFill} {...register("email")}/>
-                            
-                            <InputLogin error={errors.password} name="password" type="password" icon={RiLockPasswordFill}  {...register("password")}/>
+                            <Text textAlign="center" fontWeight="700" fontSize="14" color="#5a5a5a">Qual é o seu e-mail?</Text>
+                            <InputLogin error={errors.email} name="email" type="text" {...register("email")}/>
                         </Stack>
-                        <Link ml="revert" color="#5a5a5a" fontSize={12}>esqueci a senha</Link>
-                        <Button loading={formState.isSubmitting} nameButton="Log in" />
+                       
+                        <Button loading={formState.isSubmitting} nameButton="Finalizar" />
                     </Flex>
-                    <Text fontSize="16" position="absolute" bottom="10" color="#5A5A5A">Ainda não tem conta? <Link href="/access/create-login-name" color="#35CB8C">Clique aqui</Link></Text>
                 </Flex>
 
                 <BackgroundLogo />
